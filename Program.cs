@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ScraperApi.Services;
 using ScraperApi.Data;
@@ -38,6 +35,27 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Scraper API V1");
         c.RoutePrefix = string.Empty; // serve the Swagger UI at the root URL
     });
+}
+
+// Preload data at application startup 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<ActorsDbContext>();
+        var scraperService = services.GetRequiredService<IScraperService>();
+
+        if (!context.Actors.Any())
+        {
+            var actors = await scraperService.GetTopActorsAsync();
+            await scraperService.LoadActorsIntoDatabaseAsync(actors);
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"An error occurred while seeding the DB: {ex.Message}");
+    }
 }
 
 app.UseHttpsRedirection();

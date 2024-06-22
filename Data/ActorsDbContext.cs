@@ -11,17 +11,12 @@ namespace ScraperApi.Data
             : base(options)
         {
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<Actor>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Name).IsRequired();
-                entity.HasIndex(e => e.Rank).IsUnique();
-            });
+            // Ensure unique Rank constraint
+            modelBuilder.Entity<Actor>()
+                .HasIndex(a => a.Rank)
+                .IsUnique();
         }
     }
 }

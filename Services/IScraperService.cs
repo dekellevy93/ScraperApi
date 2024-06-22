@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using ScraperApi.Models;
+﻿using ScraperApi.Models;
 
 public interface IScraperService
 {
     Task<IEnumerable<Actor>> GetTopActorsAsync();
+    Task LoadActorsIntoDatabaseAsync(IEnumerable<Actor> actors);
 }

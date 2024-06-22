@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using ScraperApi.Data;
-using ScraperApi.Data.Repositories;
+﻿using ScraperApi.Data.Repositories;
 using ScraperApi.Models;
 
 namespace ScraperApi.Services

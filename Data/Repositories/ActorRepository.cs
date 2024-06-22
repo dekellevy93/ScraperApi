@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ScraperApi.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ScraperApi.Data.Repositories
 {
@@ -94,9 +91,8 @@ namespace ScraperApi.Data.Repositories
                 throw new ArgumentNullException(nameof(actor));
             }
 
-            // Check for duplicate rank (assuming Rank is a property of Actor)
+            // Check for duplicate rank
             // This assumes Rank is a unique property. 
-            // If not, you might need to add a unique constraint to the database.
             if (await _context.Actors.AnyAsync(a => a.Id != actor.Id && a.Rank == actor.Rank))
             {
                 throw new InvalidOperationException("An actor with the same rank already exists.");
@@ -109,10 +105,8 @@ namespace ScraperApi.Data.Repositories
 
                 if (existingActor != null)
                 {
-                    // Update the properties of the existing entity
                     existingActor.Name = actor.Name;
                     existingActor.Rank = actor.Rank;
-                    // ... update other properties
                 }
 
                 await _context.SaveChangesAsync();
@@ -120,14 +114,13 @@ namespace ScraperApi.Data.Repositories
             catch (DbUpdateConcurrencyException ex)
             {
                 // Handle concurrency issues, e.g., another user updated the same actor
-                // Log the exception, provide a user-friendly message, and potentially offer options like reloading the data.
-                // For this example, we'll simply rethrow the exception for now.
+                // Log the exception
                 throw new Exception("The actor was updated by another user. Please refresh and try again.", ex);
             }
             catch (DbUpdateException ex)
             {
                 // Handle general database update errors (e.g., constraint violations)
-                // Log the error and provide a user-friendly message
+                // Log the error
                 throw new Exception("An error occurred while updating the actor. Please check your data and try again.", ex);
             }
         }

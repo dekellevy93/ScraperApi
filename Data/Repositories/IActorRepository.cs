@@ -1,6 +1,4 @@
 ﻿using ScraperApi.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ScraperApi.Data.Repositories
 {
