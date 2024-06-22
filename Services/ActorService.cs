@@ -16,7 +16,7 @@ namespace ScraperApi.Services
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task<Actor> GetActorByIdAsync(int id)
+        public async Task<ActorDto> GetActorByIdAsync(int id)
         {
             return await _repository.GetActorByIdAsync(id);
         }

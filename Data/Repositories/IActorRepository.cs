@@ -11,7 +11,7 @@ namespace ScraperApi.Data.Repositories
                                        int? maxRank = null,
                                        int? pageNumber = 0,
                                        int? pageSize = 0);
-    Task<Actor> GetActorByIdAsync(int id);
+    Task<ActorDto> GetActorByIdAsync(int id);
         Task AddActorAsync(Actor actor);
         Task UpdateActorAsync(Actor actor);
         Task DeleteActorAsync(int id);

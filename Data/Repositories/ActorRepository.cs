@@ -53,9 +53,21 @@ namespace ScraperApi.Data.Repositories
             return actors;
         }
 
-        public async Task<Actor> GetActorByIdAsync(int id)
+        public async Task<ActorDto> GetActorByIdAsync(int id)
         {
-            return await _context.Actors.FindAsync(id);
+            var actor = await _context.Actors.FindAsync(id);
+
+            // Handle case where actor is not found
+            if (actor == null)
+            {
+                return null;
+            }
+
+            return new ActorDto
+            {
+                Id = actor.Id,
+                Name = actor.Name
+            };
         }
 
         public async Task AddActorAsync(Actor actor)
@@ -92,8 +104,17 @@ namespace ScraperApi.Data.Repositories
 
             try
             {
-                // Use Update instead of manually setting the state for better performance
-                _context.Actors.Update(actor);
+                // Fetch the existing entity from the database
+                var existingActor = await _context.Actors.FindAsync(actor.Id);
+
+                if (existingActor != null)
+                {
+                    // Update the properties of the existing entity
+                    existingActor.Name = actor.Name;
+                    existingActor.Rank = actor.Rank;
+                    // ... update other properties
+                }
+
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex)

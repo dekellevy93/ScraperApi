@@ -11,7 +11,7 @@ namespace ScraperApi.Services
                                        int? maxRank = null,
                                        int? pageNumber = 1,
                                        int? pageSize = 10);
-        Task<Actor> GetActorByIdAsync(int id);
+        Task<ActorDto> GetActorByIdAsync(int id);
         Task AddActorAsync(Actor actor);
         Task UpdateActorAsync(Actor actor);
         Task DeleteActorAsync(int id);
