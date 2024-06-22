@@ -15,12 +15,12 @@ namespace ScraperApi.Controllers
             _actorService = actorService;
         }
 
-        [HttpGet]
+        [HttpGet("actors/{pageNumber:int}/{pageSize:int}")]
         public async Task<ActionResult<IEnumerable<ActorDto>>> GetAllActors(string? nameFilter = null,
                                                                    int? minRank = null,
                                                                    int? maxRank = null,
-                                                                   int pageNumber = 1,
-                                                                   int pageSize = 10)
+                                                                   int? pageNumber = 1,
+                                                                   int? pageSize = 10)
         {
             try
             {

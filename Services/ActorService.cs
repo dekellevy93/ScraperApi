@@ -36,9 +36,9 @@ namespace ScraperApi.Services
             await _repository.DeleteActorAsync(id);
         }
 
-        public async Task<List<ActorDto>> GetAllActorsAsync(string nameFilter = null, int? minRank = null, int? maxRank = null, int pageNumber = 1, int pageSize = 1)
+        public async Task<List<ActorDto>> GetAllActorsAsync(string nameFilter = null, int? minRank = null, int? maxRank = null, int? pageNumber = 1, int? pageSize = 10)
         {
-            return await _repository.GetAllActorsAsync();
+            return await _repository.GetAllActorsAsync(nameFilter , minRank, maxRank, pageNumber,pageSize);
         }
     }
 }

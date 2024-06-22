@@ -15,7 +15,7 @@ namespace ScraperApi.Data.Repositories
             _context = context;
         }
 
-        public async Task<List<ActorDto>> GetAllActorsAsync(string nameFilter, int? minRank, int? maxRank, int pageNumber, int pageSize)
+        public async Task<List<ActorDto>> GetAllActorsAsync(string nameFilter, int? minRank, int? maxRank, int? pageNumber, int? pageSize)
         {
             IQueryable<Actor> query = _context.Actors;
 
@@ -33,16 +33,22 @@ namespace ScraperApi.Data.Repositories
                 query = query.Where(a => a.Rank <= maxRank.Value);
             }
 
-            // Pagination
+            if (pageNumber > 0 && pageSize > 0)
+            {
+                // Pagination (with OrderBy)
+                query = query
+                    .OrderBy(a => a.Id)
+                    .Skip((int)((pageNumber - 1) * pageSize))
+                    .Take((int)pageSize);
+            }
+
             var actors = await query
-                   .Skip((pageNumber - 1) * pageSize)
-                   .Take(pageSize)
-                   .Select(a => new ActorDto
-                   {
-                       Name = a.Name,
-                       Id = a.Id
-                   })
-                   .ToListAsync();
+                .Select(a => new ActorDto
+                {
+                    Name = a.Name,
+                    Id = a.Id
+                })
+                .ToListAsync();
 
             return actors;
         }
